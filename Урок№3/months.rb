@@ -27,4 +27,3 @@ months.each do |key, value|
   puts "#{key} => #{value}"
 end
 
-43594195
