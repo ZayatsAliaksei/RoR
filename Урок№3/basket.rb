@@ -1,24 +1,20 @@
-
-
 hash = {}
 
 def hash_view(hash)
-  hash.map { |key,value|
+  hash.map { |key, value|
     puts "#{key}:"
-    puts value.map{|key,value| puts "#{key} руб.#{value}шт."}
+    puts value.map { |key, value| puts "#{key} руб.#{value}шт." }
   }
 end
 
 def get_all_sum(hash)
   puts "Сумма за каждый продукт:"
-  product_sum = {}
-  hash.map{|product,prop| product_sum[product] = (prop.map{|price,count| price*count})[0]}
-  product_sum.each {|product,sum| puts "#{product} - #{sum} руб."}
+  hash.each { |product, prop| hash[product] = prop.keys.first * prop.values.first}
+  hash.each { |product, sum| puts "#{product} - #{sum} руб." }
   sleep(5)
   puts "Общая сумма корзины:"
-  puts product_sum.values.sum.ceil(2)
+  puts hash.values.sum.ceil(2)
 end
-
 
 loop do
   puts "Введите название товара"
@@ -28,9 +24,9 @@ loop do
   puts "Введите количество едениц товара"
   count = gets.chomp.to_i
 
-  hash.store(name,{cost.to_f => count})
+  hash.store(name, { cost.to_f => count })
   puts hash
-  # здесь идет обработка ввода, в зависимости от выбранного варианта
+
   puts "Если это все покупки введите - стоп, продолжить дальше Enter"
   stop = gets.chomp.to_s
   if stop == 'стоп'
