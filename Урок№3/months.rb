@@ -15,15 +15,15 @@ months = {
   "March " => 31,
 }
 
-months.each do |key, value|
-  if value == 30
-    puts key
+months.each do |name, day|
+  if day == 30
+    puts name
   end
 end
 sleep(2)
 puts 'И весь Хэш заодно'
 sleep(2)
-months.each do |key, value|
-  puts "#{key} => #{value}"
+months.each do |name, day|
+  puts "#{name} => #{day}"
 end
 
