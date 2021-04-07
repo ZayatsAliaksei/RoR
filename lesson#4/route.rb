@@ -1,15 +1,13 @@
 class Route
   attr_reader :first_station, :last_statiom
 
-  def initialize(first_station, last_station, midle_station = nil)
-    @first_station = first_station
-    @last_station = last_station
-    @midle_stations = []
-    @midle_stations << midle_station
+  def initialize(first_station, last_station)
+    @all_station[0] = station.new(first_station)
+    @all_station << station.new(last_station)
   end
 
   def add_station(station)
-    @midle_stations << station
+    @all_station.insert(-2,station.new(station))
   end
 
   def delete_station(station)
@@ -17,16 +15,11 @@ class Route
   end
 
   def view_stations
-    puts @first_station
-    all_station.each { |name_station| puts "#{name_station}" }
-    puts @last_statiom
+    @all_station.each { |station| puts "#{station.name}" }
   end
 
   def get_all_stations
-    all_station = @midle_stations
-    all_station.insert(0, @first_station)
-    all_station.insert(-1, @last_statiom)
-    all_station
+    @all_station
   end
 
 end

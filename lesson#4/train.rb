@@ -42,15 +42,15 @@ class Train
   end
 
   def add_route(route)
-    @current_route = route.get_all_stations
+    @current_route = route.new(first_station,last_station)
     @index = 0
-    @current_station = @current_route[@index]
+    @current_route[@index]
   end
 
   def to_next_station
     if not_last?
       @index += 1
-      @current_station = @current_route[@index]
+     @current_route[@index]
     else
       puts "The last station"
     end
@@ -59,20 +59,18 @@ class Train
   def to_previous_station
     if not_first?
       @index -= 1
-      @current_station = @current_route[@index]
+      @current_route[@index]
     else
       puts "The first station"
     end
   end
 
-  def view_close_route
-    if not_last? && not_first?
-      puts "prev.station is:#{@current_route[@index - 1]} current station is:#{@current_route[@index]} next station is:#{@current_route[@index + 1]}"
-    elsif !not_last?
-      puts "prev.station is:#{@current_route[@index - 1]} current station is:#{@current_route[@index]},station is last}"
-    elsif !not_first?
-      puts "current station is first:#{@current_route[@index]},next station is:#{@current_route[@index + 1]}"
-    end
+  def next_station
+    @current_route[@index + 1] != nil ?  @current_route[@index + 1] : puts "Last station"
+  end
+
+  def previous_station
+    @index >= 0  ?  @current_route[@index - 1] : puts "First station"
   end
 
   def not_last?
