@@ -1,17 +1,16 @@
 class Train
-
   attr_reader :train_number, :train_type, :wagon_sum, :route
   attr_accessor :speed, :current_station, :current_route
 
   def initialize(train_number, train_type, wagon_sum)
-    @train_number = train_number4
+    @train_number = train_number
     @train_type = train_type
     @wagon_sum = wagon_sum
     @speed = 0
   end
 
   def add_speed(add_speed)
-    @speed = +add_speed
+    @speed += add_speed
   end
 
   def get_current_speed
@@ -19,7 +18,7 @@ class Train
   end
 
   def slow_down(minus_speed)
-    @speed = -minus_speed
+    @speed -= minus_speed
   end
 
   def get_wagon_sum
@@ -43,12 +42,12 @@ class Train
   end
 
   def add_route(route)
-    @current_route = route.get_all_station()
+    @current_route = route.get_all_stations
     @index = 0
     @current_station = @current_route[@index]
   end
 
-  def to_next_station()
+  def to_next_station
     if not_last?
       @index += 1
       @current_station = @current_route[@index]
@@ -57,7 +56,7 @@ class Train
     end
   end
 
-  def to_previous_station(change)
+  def to_previous_station
     if not_first?
       @index -= 1
       @current_station = @current_route[@index]
@@ -77,11 +76,10 @@ class Train
   end
 
   def not_last?
-    @current_route[@index] != @current_route.last ? true : false
+    @current_route[@index] != @current_route.last
   end
 
   def not_first?
-    @current_route[@index] != @current_route.first ? true : false
+    @current_route[@index] != @current_route.first
   end
-
 end
