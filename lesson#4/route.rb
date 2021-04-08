@@ -11,7 +11,7 @@ class Route
   end
 
   def delete_station(station)
-    @midle_stations.delete(station)
+    @all_station.delete(station)
   end
 
   def view_stations
