@@ -21,5 +21,4 @@ class Route
   def get_all_stations
     @all_stations
   end
-
 end
