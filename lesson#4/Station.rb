@@ -1,10 +1,21 @@
 class Station
-  attr_reader :name
+  attr_reader :name ,:stations
 
+  @@stations = {}
   def initialize(name)
     @name = name
-    @trains = {}
+    @trains = []
+    @@stations[name] = self
   end
+
+  def self.stations_list
+    @@stations
+  end
+
+  def self.get_station(name)
+    @@stations[name]
+  end
+
 
   def get_train(arrival_train)
     @trains << arrival_train
@@ -18,7 +29,7 @@ class Station
     sum_cargo = 0
     sum_passenger = 0
     @trains.each_value do |train_type|
-      if train_type == "грузовой"
+      if train_type == "cargo"
         sum_cargo += 1
       else
         sum_passenger += 1
@@ -26,8 +37,8 @@ class Station
     end
 
     type_sum = {
-      sum_cargo => "грузовой",
-      sum_passenger => "пассажирский"
+      sum_cargo => "cargo",
+      sum_passenger => "passenger"
     }
     type_sum.each { |sum, type| puts "#{sum} -- #{type}" }
   end
