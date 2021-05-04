@@ -1,4 +1,8 @@
+require_relative 'Manufacturer'
+
 class Train
+  include Manufacturer
+  include InstanceCounter
   attr_reader :train_number, :train_type, :route, :speed, :current_route
 
   @@trains = {}

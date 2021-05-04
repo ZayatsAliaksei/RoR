@@ -86,9 +86,9 @@ class Menu
     puts "Введите названи маршрута:"
     name = gets.chop.to_s
     puts "Для создания маршрута введите название первой станции :"
-    first_station = Station.get_station(gets.chop.to_s)
+    first_station = take_station(gets.chop.to_s)
     puts "Для завершения создания маршрута введите название второй станции :"
-    second_station = Station.get_station(gets.chop.to_s)
+    second_station = take_station(gets.chop.to_s)
     route = Route.new(name, first_station, second_station)
     puts "Маршрут создан #{route.name}"
     sleep(2)
@@ -102,12 +102,12 @@ class Menu
     var = gets.chop.to_i
     if var == 1
       puts "Введите название станции которую хотите удалить"
-      station_name = Station.get_station(gets.chop.to_s)
+      station_name = take_station(gets.chop.to_s)
       route = Route.get_route(route_name)
       route.delete_station(station_name)
     elsif var == 2
       puts "Введите название станции которую хотите добавить"
-      station_name = Station.get_station(gets.chop.to_s)
+      station_name = take_station(gets.chop.to_s)
       route = Route.get_route(route_name)
       route.add_station(station_name)
     end
@@ -116,7 +116,7 @@ class Menu
 
   def set_route_to_train
     puts "Введите норме поезда для которого укажем маршрут"
-    train = Train.get_train(gets.chop.to_i)
+    train = take_train(gets.chop.to_i)
     puts "Укажите название маршрута по которому будет следовать поезд:"
     route = Route.get_route(gets.chop.text)
     train.add_route(route)
@@ -125,7 +125,7 @@ class Menu
 
   def add_wagon_to_train
     puts "Укажите номер поезда к которму добавим вагон"
-    train = Train.get_train(gets.chop.to_i)
+    train = take_train(gets.chop.to_i)
     train_type = train.train_type
     train_type == 'cargo' ? train.add_wagon(CargoWagon.new) : train.add_wagon(CargoWagon.new)
     choice
@@ -133,14 +133,14 @@ class Menu
 
   def delete_wagon_from_train
     puts "Укажите номер поезда от которого отцепим вагон"
-    train = Train.get_train(gets.chop.to_i)
+    train = take_train(gets.chop.to_i)
     train.unhook_wagon
     choice
   end
 
   def move_train
     puts "Укажите номер поезда который будем перемещать по маршруту"
-    train = Train.get_train(gets.chop.to_i)
+    train = take_train(gets.chop.to_i)
     puts "Если едем вперед укажите 1 если назад 2"
     gets.chop.to_i == 1 ? train.to_next_station : train.to_previous_station
     choice
@@ -177,6 +177,14 @@ class Menu
     Route.routs_list
     binding.irb
     choice
+  end
+
+  def take_train(number)
+    PassengerTrain.get_train(number)
+  end
+
+  def take_station(name)
+    Station.get_station(name)
   end
 
 end
