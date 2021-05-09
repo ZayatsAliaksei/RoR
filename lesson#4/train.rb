@@ -1,4 +1,4 @@
-require_relative 'Manufacturer'
+require_relative 'manufacturer'
 
 class Train
   include Manufacturer
@@ -13,6 +13,7 @@ class Train
     @wagons = []
     @speed = 0
     @@trains[train_number] = self
+    self.register_instance
   end
 
   def self.trains_list

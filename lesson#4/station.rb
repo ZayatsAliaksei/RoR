@@ -7,6 +7,7 @@ class Station
     @name = name
     @trains = []
     @@stations[name] = self
+    self.register_instance
   end
 
   def self.stations_list
@@ -47,4 +48,5 @@ class Station
   def send_train(went_train)
     @trains.delete(went_train)
   end
+
 end

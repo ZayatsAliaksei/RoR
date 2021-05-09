@@ -1,11 +1,12 @@
-require_relative 'Route'
-require_relative 'Train'
-require_relative 'Wagon'
-require_relative 'CargoTrain'
-require_relative 'PassengerTrain'
-require_relative 'Station'
-require_relative 'CargoWagon'
-require_relative 'PassengerWagon'
+require_relative 'instance_counter'
+require_relative 'route'
+require_relative 'train'
+require_relative 'wagon'
+require_relative 'cargo_train'
+require_relative 'passenger_train'
+require_relative 'station'
+require_relative 'cargo_wagon'
+require_relative 'passenger_wagon'
 
 class Menu
 
@@ -180,7 +181,7 @@ class Menu
   end
 
   def take_train(number)
-    PassengerTrain.get_train(number)
+    Train.get_train(number)
   end
 
   def take_station(name)

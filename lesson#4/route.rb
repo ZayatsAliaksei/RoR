@@ -9,6 +9,7 @@ class Route
     @all_stations[0] = first_station
     @all_stations << last_station
     @@routes[name] = self
+    self.register_instance
   end
 
   def self.routs_list
