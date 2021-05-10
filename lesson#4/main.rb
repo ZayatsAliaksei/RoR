@@ -149,9 +149,9 @@ class Menu
 
   def train_and_route_list
     puts "Список доступный станций:"
-    Station.stations_list.each_key { |name| puts name }
+    Station.all.each_key { |name| puts name }
     puts "Введите название станции на которой хотите провреить поезда:"
-    Station.get_station(gets.chop.to_s).get_train_list
+    Station.find(gets.chop.to_s).get_trains_list
     choice
   end
 
@@ -181,11 +181,11 @@ class Menu
   end
 
   def take_train(number)
-    Train.get_train(number)
+    Train.find(number)
   end
 
   def take_station(name)
-    Station.get_station(name)
+    Station.find(name)
   end
 
 end

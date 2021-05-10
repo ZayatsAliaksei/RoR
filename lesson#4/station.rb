@@ -10,11 +10,11 @@ class Station
     self.register_instance
   end
 
-  def self.stations_list
+  def self.all
     @@stations
   end
 
-  def self.get_station(name)
+  def self.find(name)
     @@stations[name]
   end
 

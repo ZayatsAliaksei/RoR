@@ -20,7 +20,7 @@ class Train
     @@trains
   end
 
-  def self.get_train(train_number)
+  def self.find(train_number)
     @@trains[train_number]
   end
 
