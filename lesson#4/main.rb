@@ -52,29 +52,39 @@ class Menu
   end
 
   def create_train
+    begin
     puts "Укажи тип поезда 1 - Пассажирскй | 2 - Грузовой"
     train = gets.chop.to_i
     if train == 1
-      puts 'Укажите номер поезда - '
-      number = gets.chop.to_i
+      puts 'Укажите номер поезда в формате - три буквы или цифры в любом порядке, необязательный дефис (может быть, а может нет) и еще 2 буквы или цифры после дефиса'
+      number = gets.chop
       train = PassengerTrain.new(number)
       puts "Поезд создан:\nномер - #{train.train_number}\nтип - #{train.train_type}"
       sleep(3)
     elsif train == 2
-      puts 'Укажите номер поезда - '
-      number = gets.chop.to_i
+      puts 'Укажите номер поезда в формате - три буквы или цифры в любом порядке, необязательный дефис (может быть, а может нет) и еще 2 буквы или цифры после дефиса'
+      number = gets.chop
       train = CargoTrain.new(number)
       puts "Поезд создан:\nномер - #{train.train_number} \n тип - #{train.train_type}"
       sleep(3)
+    end
+    rescue RuntimeError => e
+      puts e.message
+      retry
     end
     choice
   end
 
   def create_station
+    begin
     puts 'Укажите название станции - '
-    station = Station.new(gets.chop.to_s)
-    puts "Станция созданы:\nназвание - #{station.name}\n"
+    station = Station.new(gets.chop)
+    puts "Станция создана:\nназвание - #{station.name}\n"
     sleep(3)
+    rescue RuntimeError => e
+      puts e.message
+      retry
+    end
     choice
   end
 
@@ -84,6 +94,7 @@ class Menu
   end
 
   def create_route
+    begin
     puts "Введите названи маршрута:"
     name = gets.chop.to_s
     puts "Для создания маршрута введите название первой станции :"
@@ -92,7 +103,10 @@ class Menu
     second_station = take_station(gets.chop.to_s)
     route = Route.new(name, first_station, second_station)
     puts "Маршрут создан #{route.name}"
-    sleep(2)
+    rescue RuntimeError => e
+      puts e.message
+      retry
+    end
     choice
   end
 
@@ -117,7 +131,7 @@ class Menu
 
   def set_route_to_train
     puts "Введите норме поезда для которого укажем маршрут"
-    train = take_train(gets.chop.to_i)
+    train = take_train(gets.chop)
     puts "Укажите название маршрута по которому будет следовать поезд:"
     route = Route.get_route(gets.chop.text)
     train.add_route(route)
@@ -126,22 +140,22 @@ class Menu
 
   def add_wagon_to_train
     puts "Укажите номер поезда к которму добавим вагон"
-    train = take_train(gets.chop.to_i)
+    train = take_train(gets.chop)
     train_type = train.train_type
-    train_type == 'cargo' ? train.add_wagon(CargoWagon.new) : train.add_wagon(CargoWagon.new)
+    train_type == 'cargo' ? train.add_wagon(CargoWagon.new) : train.add_wagon(PassengerWagon.new)
     choice
   end
 
   def delete_wagon_from_train
     puts "Укажите номер поезда от которого отцепим вагон"
-    train = take_train(gets.chop.to_i)
+    train = take_train(gets.chop)
     train.unhook_wagon
     choice
   end
 
   def move_train
     puts "Укажите номер поезда который будем перемещать по маршруту"
-    train = take_train(gets.chop.to_i)
+    train = take_train(gets.chop)
     puts "Если едем вперед укажите 1 если назад 2"
     gets.chop.to_i == 1 ? train.to_next_station : train.to_previous_station
     choice
@@ -163,19 +177,19 @@ class Menu
     @c = Station.new('C')
     @d = Station.new('D')
     @e = Station.new('E')
-    puts Station.stations_list
+    puts Station.all
     sleep(2)
-    puts "Создание поездов - 55(cargo),66(cargo),77(pass),88(pass)"
-    @train_55 = Train.new(55, "cargo")
-    @train_66 = Train.new(66, 'cargo')
-    @train_77 = Train.new(77, 'passenger')
-    @train_88 = Train.new(88, 'passenger')
+    puts "Создание поездов - 12311(cargo),12312(cargo),12313(pass),12314(pass)"
+    @train_11 = Train.new("12311", "cargo")
+    @train_12 = Train.new("12312", 'cargo')
+    @train_13 = Train.new("12313", 'passenger')
+    @train_14 = Train.new("12314", 'passenger')
     puts Train.trains_list
     sleep(2)
     puts "Создание Маршрутов: way(A,E); road(A,B),"
     @way = Route.new('way', @a, @e)
     @road = Route.new('road', @a, @b)
-    Route.routs_list
+    Route.all
     binding.irb
     choice
   end

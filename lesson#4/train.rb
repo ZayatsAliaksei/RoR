@@ -5,6 +5,8 @@ class Train
   include InstanceCounter
   attr_reader :train_number, :train_type, :route, :speed, :current_route
 
+  NUMBER_FORMAT = /^[а-я0-9]{3}\-*[а-я0-9]{2}$/i
+
   @@trains = {}
 
   def initialize(train_number, train_type)
@@ -14,6 +16,7 @@ class Train
     @speed = 0
     @@trains[train_number] = self
     self.register_instance
+    validate!
   end
 
   def self.trains_list
@@ -21,7 +24,7 @@ class Train
   end
 
   def self.find(train_number)
-    @@trains[train_number]
+    @@trains[train_number].nil? ? false :  @@trains[train_number]
   end
 
   def add_speed(add_speed)
@@ -33,19 +36,11 @@ class Train
   end
 
   def unhook_wagon
-    if @train_speed == 0
-       @wagons > 0 ? @wagons.pop : "No more wagon"
-    else
-      puts "PLz stop the train to unhook wagon"
-    end
+    @wagons.pop if @train_speed != 0 && @wagons.count > 0
   end
 
   def hook_ap_wagon(wagon)
-    if @train_speed == 0 && wagon.type == self.train_type
-      @wagons << wagon
-    else
-      puts "PLz stop the train to hook_ap wagon or check wagon type"
-    end
+    @wagons << wagon if @train_speed == 0 && wagon.type == self.train_type
   end
 
   def add_route(route)
@@ -58,18 +53,14 @@ class Train
     if not_last?
       @index += 1
       edit_current_station
-    else
-      puts "You are in last station"
     end
   end
 
   def to_previous_station
-    if not_first?
+    if not_first? && not_last?
       @index -= 1
       edit_current_station
-    else
-      puts "You are in first station"
-    end
+      end
   end
 
   def not_last?
@@ -88,6 +79,20 @@ class Train
     @current_station = @current_route.all_stations[@index]
     @current_station.get_train(self)
   end
-  #нет методов которые требуют сокрытия извне
+
+  protected
+
+  def validate!
+    raise "Номер не может быть пустым!" if @train_number.empty?
+    raise "Номер не соотвествует формату " if @train_number !~ NUMBER_FORMAT
+    true
+  end
+
+  def valid?
+    validate!
+  rescue
+    false
+  end
+
 end
 

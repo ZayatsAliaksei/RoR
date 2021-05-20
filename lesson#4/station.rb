@@ -8,6 +8,7 @@ class Station
     @trains = []
     @@stations[name] = self
     self.register_instance
+    validate!
   end
 
   def self.all
@@ -15,7 +16,7 @@ class Station
   end
 
   def self.find(name)
-    @@stations[name]
+    @@stations[name].nil? ? false  : @@stations[name]
   end
 
 
@@ -47,6 +48,17 @@ class Station
 
   def send_train(went_train)
     @trains.delete(went_train)
+  end
+
+  def validate!
+    raise "Необходимо название для станции" if @name.empty?
+    true
+  end
+
+  def valid?
+    validate!
+  rescue
+    false
   end
 
 end

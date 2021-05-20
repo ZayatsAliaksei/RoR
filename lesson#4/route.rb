@@ -10,9 +10,10 @@ class Route
     @all_stations << last_station
     @@routes[name] = self
     self.register_instance
+    validate!
   end
 
-  def self.routs_list
+  def self.all
     @@routes
   end
 
@@ -30,5 +31,17 @@ class Route
 
   def view_stations
     @all_stations.each { |station| puts "#{station.name}" }
+  end
+
+  def validate!
+    raise "Необходимо название для маршрута" if @name.empty?
+    raise "Укажите название обоих станций" if first_station.empty? || last_station.empty?
+    true
+  end
+
+  def valid?
+    validate!
+  rescue
+    false
   end
 end
