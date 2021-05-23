@@ -3,7 +3,7 @@ require_relative 'manufacturer'
 class Train
   include Manufacturer
   include InstanceCounter
-  attr_reader :train_number, :train_type, :route, :speed, :current_route
+  attr_reader :train_number, :train_type, :route, :speed, :current_route, :wagons
 
   NUMBER_FORMAT = /^[а-я0-9]{3}\-*[а-я0-9]{2}$/i
 
@@ -24,7 +24,7 @@ class Train
   end
 
   def self.find(train_number)
-    @@trains[train_number].nil? ? false :  @@trains[train_number]
+    @@trains[train_number]
   end
 
   def add_speed(add_speed)
@@ -36,11 +36,11 @@ class Train
   end
 
   def unhook_wagon
-    @wagons.pop if @train_speed != 0 && @wagons.count > 0
+    @wagons.pop if @speed != 0 && @wagons.count > 0
   end
 
   def hook_ap_wagon(wagon)
-    @wagons << wagon if @train_speed == 0 && wagon.type == self.train_type
+    @wagons << wagon if @speed == 0 && wagon.type == self.train_type
   end
 
   def add_route(route)
@@ -60,7 +60,7 @@ class Train
     if not_first? && not_last?
       @index -= 1
       edit_current_station
-      end
+    end
   end
 
   def not_last?
@@ -78,6 +78,12 @@ class Train
   def edit_current_station
     @current_station = @current_route.all_stations[@index]
     @current_station.get_train(self)
+  end
+
+  def train_wagons
+    if block_given?
+      @wagons.each { |wagon| yield(wagon) }
+    end
   end
 
   protected

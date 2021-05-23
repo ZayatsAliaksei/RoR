@@ -1,6 +1,6 @@
 class Station
   include InstanceCounter
-  attr_reader :name ,:stations
+  attr_reader :name ,:stations,:trains
 
   @@stations = {}
   def initialize(name)
@@ -25,7 +25,7 @@ class Station
   end
 
   def get_trains_list
-    @trains.each { |train, type| puts "#{train} => #{type}" }
+    @trains.each { |train| puts "#{train} => #{train.train_type}" }
   end
 
   def get_trains_type_list
@@ -48,6 +48,12 @@ class Station
 
   def send_train(went_train)
     @trains.delete(went_train)
+  end
+
+  def trains_on_station
+     if block_given?
+       @trains.each { |train| yield(train) }
+     end
   end
 
   def validate!

@@ -34,8 +34,7 @@ class Route
   end
 
   def validate!
-    raise "Необходимо название для маршрута" if @name.empty?
-    raise "Укажите название обоих станций" if first_station.empty? || last_station.empty?
+    raise "Необходимо название для маршрута" if @name.nil?
     true
   end
 
