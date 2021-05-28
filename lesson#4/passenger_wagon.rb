@@ -10,7 +10,7 @@ class PassengerWagon < Wagon
 
   def take_seat
     if @value > 0
-      @taken_seats += 1
+      self.taken_seats += 1
       @value -= 1
     else
       false

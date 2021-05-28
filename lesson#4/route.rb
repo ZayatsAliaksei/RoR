@@ -30,7 +30,7 @@ class Route
   end
 
   def view_stations
-    @all_stations.each { |station| puts "#{station.name}" }
+    all_stations.each { |station| puts "#{station.name}" }
   end
 
   def validate!

@@ -3,7 +3,7 @@ require_relative 'manufacturer'
 class Train
   include Manufacturer
   include InstanceCounter
-  attr_reader :train_number, :train_type, :route, :speed, :current_route, :wagons
+  attr_reader :train_number, :train_type, :route, :current_route, :wagons
 
   NUMBER_FORMAT = /^[а-я0-9]{3}\-*[а-я0-9]{2}$/i
 
@@ -28,11 +28,11 @@ class Train
   end
 
   def add_speed(add_speed)
-    @speed += add_speed
+    self.speed += add_speed
   end
 
   def slow_down(minus_speed)
-    @speed -= minus_speed
+    self.speed -= minus_speed
   end
 
   def unhook_wagon
@@ -87,6 +87,8 @@ class Train
   end
 
   protected
+
+  attr_writer :speed
 
   def validate!
     raise "Номер не может быть пустым!" if @train_number.empty?

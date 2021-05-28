@@ -47,7 +47,7 @@ class Menu
       train_and_route_list
     when 8
       manage_wagon
-    when  9
+    when 9
       train_on_station
     when 10
       info_ab_train_wagon
@@ -62,21 +62,21 @@ class Menu
 
   def create_train
     begin
-    puts "Укажи тип поезда 1 - Пассажирскй | 2 - Грузовой"
-    train = gets.chomp.to_i
-    if train == 1
-      puts 'Укажите номер поезда в формате - три буквы или цифры в любом порядке, необязательный дефис (может быть, а может нет) и еще 2 буквы или цифры после дефиса'
-      number = gets.chomp
-      train = PassengerTrain.new(number)
-      puts "Поезд создан:\nномер - #{train.train_number}\nтип - #{train.train_type}"
-      sleep(3)
-    elsif train == 2
-      puts 'Укажите номер поезда в формате - три буквы или цифры в любом порядке, необязательный дефис (может быть, а может нет) и еще 2 буквы или цифры после дефиса'
-      number = gets.chomp
-      train = CargoTrain.new(number)
-      puts "Поезд создан:\nномер - #{train.train_number} \n тип - #{train.train_type}"
-      sleep(3)
-    end
+      puts "Укажи тип поезда 1 - Пассажирскй | 2 - Грузовой"
+      train = gets.chomp.to_i
+      if train == 1
+        puts 'Укажите номер поезда в формате - три буквы или цифры в любом порядке, необязательный дефис (может быть, а может нет) и еще 2 буквы или цифры после дефиса'
+        number = gets.chomp
+        train = PassengerTrain.new(number)
+        puts "Поезд создан:\nномер - #{train.train_number}\nтип - #{train.train_type}"
+        sleep(3)
+      elsif train == 2
+        puts 'Укажите номер поезда в формате - три буквы или цифры в любом порядке, необязательный дефис (может быть, а может нет) и еще 2 буквы или цифры после дефиса'
+        number = gets.chomp
+        train = CargoTrain.new(number)
+        puts "Поезд создан:\nномер - #{train.train_number} \n тип - #{train.train_type}"
+        sleep(3)
+      end
     rescue RuntimeError => e
       puts e.message
       retry
@@ -86,10 +86,10 @@ class Menu
 
   def create_station
     begin
-    puts 'Укажите название станции - '
-    station = Station.new(gets.chomp)
-    puts "Станция создана:\nназвание - #{station.name}\n"
-    sleep(3)
+      puts 'Укажите название станции - '
+      station = Station.new(gets.chomp)
+      puts "Станция создана:\nназвание - #{station.name}\n"
+      sleep(3)
     rescue RuntimeError => e
       puts e.message
       retry
@@ -104,14 +104,14 @@ class Menu
 
   def create_route
     begin
-    puts "Введите названи маршрута:"
-    name = gets.chomp.to_s
-    puts "Для создания маршрута введите название первой станции :"
-    first_station = take_station(gets.chomp.to_s)
-    puts "Для завершения создания маршрута введите название второй станции :"
-    second_station = take_station(gets.chomp.to_s)
-    route = Route.new(name, first_station, second_station)
-    puts "Маршрут создан #{route.name}"
+      puts "Введите названи маршрута:"
+      name = gets.chomp.to_s
+      puts "Для создания маршрута введите название первой станции :"
+      first_station = take_station(gets.chomp.to_s)
+      puts "Для завершения создания маршрута введите название второй станции :"
+      second_station = take_station(gets.chomp.to_s)
+      route = Route.new(name, first_station, second_station)
+      puts "Маршрут создан #{route.name}"
     rescue RuntimeError => e
       puts e.message
       retry
@@ -153,7 +153,7 @@ class Menu
     train_type = train.train_type
     puts "Укажите количество мест(если поезд пассажирский) или обьем вагона(если поезд грузовой)"
     count = gets.to_i
-    train_type == 'cargo' ? train.add_wagon(CargoWagon.new(10,count)) : train.add_wagon(PassengerWagon.new(10,count))
+    train_type == 'cargo' ? train.add_wagon(CargoWagon.new(10, count)) : train.add_wagon(PassengerWagon.new(10, count))
     choice
   end
 
@@ -176,7 +176,7 @@ class Menu
     puts "Список доступный станций:"
     Station.all.each_key { |name| puts name }
     puts "Введите название станции на которой хотите провреить поезда:"
-    Train.trains_list.each {|train| puts "Номер:#{train.train_number}"}
+    Train.trains_list.each { |train| puts "Номер:#{train.train_number}" }
     choice
   end
 
@@ -192,17 +192,17 @@ class Menu
     choice
   end
 
-    def train_on_station
+  def train_on_station
     puts "Укажите станцию на котороый хотите посмотреть поезда:"
     station = take_station(gets.chomp)
-    station.trains_on_station{|train| puts "Номер: #{train.train_number};Тип: #{train.train_type};Количество вагонов: #{train.wagons.count}"}
+    station.trains_on_station { |train| puts "Номер: #{train.train_number};Тип: #{train.train_type};Количество вагонов: #{train.wagons.count}" }
     choice
   end
 
   def info_ab_train_wagon
     puts "Укажите поезд информацию о вагонах которого хотите получить"
     train = take_train(gets.to_s.chomp)
-    train.train_wagons{|wagon| puts "Номер вагона#{wagon.number}:, тип вагона:#{wagon.type},свободных мест/пространства:#{wagon.value}"}
+    train.train_wagons { |wagon| puts "Номер вагона#{wagon.number}:, тип вагона:#{wagon.type},свободных мест/пространства:#{wagon.value}" }
     choice
   end
 
@@ -220,10 +220,10 @@ class Menu
     @way.add_station(@c)
     @way.add_station(@d)
     @road = Route.new('road', @a, @b)
-    @pass_wagon1 = PassengerWagon.new(1,10)
-    @pass_wagon2 = PassengerWagon.new(2,20)
-    @cargo_wagon3 = CargoWagon.new(3,30,)
-    @cargo_wagon4 = CargoWagon.new(4,40)
+    @pass_wagon1 = PassengerWagon.new(1, 10)
+    @pass_wagon2 = PassengerWagon.new(2, 20)
+    @cargo_wagon3 = CargoWagon.new(3, 30,)
+    @cargo_wagon4 = CargoWagon.new(4, 40)
     @train_11.hook_ap_wagon(@cargo_wagon3)
     @train_11.hook_ap_wagon(@cargo_wagon4)
     @train_12.hook_ap_wagon(@pass_wagon1)

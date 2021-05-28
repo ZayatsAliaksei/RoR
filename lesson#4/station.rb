@@ -25,13 +25,13 @@ class Station
   end
 
   def get_trains_list
-    @trains.each { |train| puts "#{train} => #{train.train_type}" }
+    trains.each { |train| puts "#{train} => #{train.train_type}" }
   end
 
   def get_trains_type_list
     sum_cargo = 0
     sum_passenger = 0
-    @trains.each_value do |train_type|
+    trains.each do |train_type|
       if train_type == "cargo"
         sum_cargo += 1
       else
@@ -47,12 +47,12 @@ class Station
   end
 
   def send_train(went_train)
-    @trains.delete(went_train)
+    trains.delete(went_train)
   end
 
   def trains_on_station
      if block_given?
-       @trains.each { |train| yield(train) }
+       trains.each { |train| yield(train) }
      end
   end
 
