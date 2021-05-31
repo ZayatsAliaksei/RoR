@@ -72,7 +72,7 @@ class Train
   end
 
   def current_station
-    @current_station.name
+    @current_station
   end
 
   def edit_current_station

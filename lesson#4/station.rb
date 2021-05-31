@@ -1,8 +1,9 @@
 class Station
   include InstanceCounter
-  attr_reader :name ,:stations,:trains
+  attr_reader :name, :trains
 
   @@stations = {}
+
   def initialize(name)
     @name = name
     @trains = []
@@ -12,20 +13,35 @@ class Station
   end
 
   def self.all
-    @@stations
+    @@stations.each { |station| yield(station) }
   end
 
   def self.find(name)
-    @@stations[name].nil? ? false  : @@stations[name]
+    @@stations[name].nil? ? false : @@stations[name]
   end
 
+  def self.trains_on_station
+    if block_given?
+      @@stations.each { |train| yield(train) }
+    end
+  end
 
   def get_train(arrival_train)
     @trains << arrival_train
   end
 
+  def delete_train(train)
+    @trains.delete_if {|obj| obj == train}
+  end
+
   def get_trains_list
-    trains.each { |train| puts "#{train} => #{train.train_type}" }
+    trains.each { |train| puts "Номер поезда:#{train.train_number}// Тип:#{train.train_type}//Вагонов:#{train.wagons.count}" }
+  end
+
+  def trains_on_station
+    if block_given?
+      trains.each { |train| yield(train) }
+    end
   end
 
   def get_trains_type_list
@@ -48,12 +64,6 @@ class Station
 
   def send_train(went_train)
     trains.delete(went_train)
-  end
-
-  def trains_on_station
-     if block_given?
-       trains.each { |train| yield(train) }
-     end
   end
 
   def validate!

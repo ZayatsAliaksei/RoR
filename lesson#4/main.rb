@@ -23,9 +23,8 @@ class Menu
     6 - Перемещать поезд по маршруту\n
     7 - Просмотреть список станций и поездов\n
     8 - Управление вагоном \n
-    9 - Просмотр списка поездов на станции \n
-    10 - Просмотр списка вагонов у поезда \n
-    11 - Seed fake data!!!(Поезда(4),Станции(5),Маршруты(2)\n"
+    9 - Просмотр списка поездов на станции и вагонов \n
+    10 - Seed fake data!!!(Поезда(4),Станции(5),Маршруты(2)\n"
     start_program(gets.chomp.to_i)
   end
 
@@ -50,8 +49,6 @@ class Menu
     when 9
       train_on_station
     when 10
-      info_ab_train_wagon
-    when 11
       seed_fake
     when 0
       create_train
@@ -153,7 +150,7 @@ class Menu
     train_type = train.train_type
     puts "Укажите количество мест(если поезд пассажирский) или обьем вагона(если поезд грузовой)"
     count = gets.to_i
-    train_type == 'cargo' ? train.add_wagon(CargoWagon.new(10, count)) : train.add_wagon(PassengerWagon.new(10, count))
+    train_type == :cargo ? train.add_wagon(CargoWagon.new(10, count)) : train.add_wagon(PassengerWagon.new(10, count))
     choice
   end
 
@@ -168,7 +165,14 @@ class Menu
     puts "Укажите номер поезда который будем перемещать по маршруту"
     train = take_train(gets.chomp)
     puts "Если едем вперед укажите 1 если назад 2"
-    gets.chop.to_i == 1 ? train.to_next_station : train.to_previous_station
+    if gets.chop.to_i == 1
+      binding.irb
+      train_departure(train)
+      train.to_next_station
+    else
+      train_departure(train)
+      train.to_previous_station
+    end
     choice
   end
 
@@ -176,7 +180,7 @@ class Menu
     puts "Список доступный станций:"
     Station.all.each_key { |name| puts name }
     puts "Введите название станции на которой хотите провреить поезда:"
-    Train.trains_list.each { |train| puts "Номер:#{train.train_number}" }
+    Train.trains_list.each { |train| puts "Номер:#{train[0]}" }
     choice
   end
 
@@ -193,17 +197,12 @@ class Menu
   end
 
   def train_on_station
-    puts "Укажите станцию на котороый хотите посмотреть поезда:"
-    station = take_station(gets.chomp)
-    station.trains_on_station { |train| puts "Номер: #{train.train_number};Тип: #{train.train_type};Количество вагонов: #{train.wagons.count}" }
+    Station.all { |station| puts "#{station[0]} \n"; station[1].get_trains_list; station[1].trains.each { |train| info_ab_train_wagon(train) } }
     choice
   end
 
-  def info_ab_train_wagon
-    puts "Укажите поезд информацию о вагонах которого хотите получить"
-    train = take_train(gets.to_s.chomp)
+  def info_ab_train_wagon(train)
     train.train_wagons { |wagon| puts "Номер вагона#{wagon.number}:, тип вагона:#{wagon.type},свободных мест/пространства:#{wagon.value}" }
-    choice
   end
 
   #для более удобнрой проверки
@@ -213,8 +212,8 @@ class Menu
     @c = Station.new('C')
     @d = Station.new('D')
     @e = Station.new('E')
-    @train_11 = Train.new("123-11", "cargo")
-    @train_12 = Train.new("123-12", 'passenger')
+    @train_11 = Train.new("123-11", :cargo)
+    @train_12 = Train.new("123-12", :passenger)
     @way = Route.new('way', @a, @e)
     @way.add_station(@b)
     @way.add_station(@c)
@@ -230,7 +229,9 @@ class Menu
     @train_12.hook_ap_wagon(@pass_wagon2)
     @train_11.add_route(@way)
     @train_12.add_route(@road)
+    train_departure(@train_11)
     @train_11.to_next_station
+    train_departure(@train_12)
     @train_12.to_next_station
     puts "Созданы станции: A,B,C,D,E; \n
     Поезда: 123-11 Грузовой, 123-12 Пассажирский \n
@@ -255,6 +256,10 @@ class Menu
 
   def take_wagon(number)
     Wagon.find(number)
+  end
+
+  def train_departure(train)
+    train.current_station.delete_train(train)
   end
 
 end
