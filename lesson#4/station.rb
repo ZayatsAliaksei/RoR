@@ -30,8 +30,8 @@ class Station
     @trains << arrival_train
   end
 
-  def delete_train(train)
-    @trains.delete_if {|obj| obj == train}
+  def send_train(train)
+    @trains.delete_if { |obj| obj == train }
   end
 
   def get_trains_list
@@ -60,10 +60,6 @@ class Station
       sum_passenger => "passenger"
     }
     type_sum.each { |sum, type| puts "#{sum} -- #{type}" }
-  end
-
-  def send_train(went_train)
-    trains.delete(went_train)
   end
 
   def validate!

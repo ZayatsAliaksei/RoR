@@ -202,7 +202,7 @@ class Menu
   end
 
   def info_ab_train_wagon(train)
-    train.train_wagons { |wagon| puts "Номер вагона#{wagon.number}:, тип вагона:#{wagon.type},свободных мест/пространства:#{wagon.value}" }
+    train.train_wagons { |wagon| puts "Номер вагона#{wagon.number}:, тип вагона:#{wagon.type},свободно:#{wagon.value} / занято #{wagon.take_value}" }
   end
 
   #для более удобнрой проверки
@@ -259,7 +259,7 @@ class Menu
   end
 
   def train_departure(train)
-    train.current_station.delete_train(train)
+    train.current_station.send_train(train)
   end
 
 end
