@@ -1,11 +1,10 @@
 require_relative 'manufacturer'
-
 class Train
   include Manufacturer
   include InstanceCounter
-  attr_reader :train_number, :train_type, :route, :current_route, :wagons
+  attr_reader :train_number, :train_type, :route, :current_route, :wagons, :current_station
 
-  NUMBER_FORMAT = /^[а-я0-9]{3}\-*[а-я0-9]{2}$/i
+  NUMBER_FORMAT = /^[а-я0-9]{3}-*[а-я0-9]{2}$/i.freeze
 
   @@trains = {}
 
@@ -15,7 +14,7 @@ class Train
     @wagons = []
     @speed = 0
     @@trains[train_number] = self
-    self.register_instance
+    register_instance
     validate!
   end
 
@@ -36,11 +35,11 @@ class Train
   end
 
   def unhook_wagon
-    @wagons.pop if @speed != 0 && @wagons.count > 0
+    @wagons.pop if @speed != 0 && @wagons.count.positive?
   end
 
   def hook_ap_wagon(wagon)
-    @wagons << wagon if @speed == 0 && wagon.type == self.train_type
+    @wagons << wagon if @speed.zero? && wagon.type == train_type
   end
 
   def add_route(route)
@@ -71,19 +70,13 @@ class Train
     @current_station[@index] != @current_route.all_stations.first
   end
 
-  def current_station
-    @current_station
-  end
-
   def edit_current_station
     @current_station = @current_route.all_stations[@index]
     @current_station.get_train(self)
   end
 
-  def train_wagons
-    if block_given?
-      @wagons.each { |wagon| yield(wagon) }
-    end
+  def train_wagons(&block)
+    @wagons.each(&block) if block_given?
   end
 
   protected
@@ -91,16 +84,15 @@ class Train
   attr_writer :speed
 
   def validate!
-    raise "Номер не может быть пустым!" if @train_number.empty?
-    raise "Номер не соотвествует формату " if @train_number !~ NUMBER_FORMAT
+    raise 'Номер не может быть пустым!' if @train_number.empty?
+    raise 'Номер не соотвествует формату ' if @train_number !~ NUMBER_FORMAT
+
     true
   end
 
   def valid?
     validate!
-  rescue
+  rescue StandardError
     false
   end
-
 end
-

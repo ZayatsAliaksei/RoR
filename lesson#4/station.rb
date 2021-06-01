@@ -48,29 +48,25 @@ class Station
     sum_cargo = 0
     sum_passenger = 0
     trains.each do |train_type|
-      if train_type == "cargo"
-        sum_cargo += 1
-      else
-        sum_passenger += 1
-      end
+      train_type == :cargo ? sum_cargo += 1 : sum_passenger += 1
     end
 
     type_sum = {
-      sum_cargo => "cargo",
-      sum_passenger => "passenger"
+      sum_cargo => 'cargo',
+      sum_passenger => 'passenger'
     }
     type_sum.each { |sum, type| puts "#{sum} -- #{type}" }
   end
 
   def validate!
-    raise "Необходимо название для станции" if @name.empty?
+    raise 'Необходимо название для станции' if @name.empty?
+
     true
   end
 
   def valid?
     validate!
-  rescue
+  rescue StandardError
     false
   end
-
 end

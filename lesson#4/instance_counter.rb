@@ -11,6 +11,7 @@ module InstanceCounter
       @instances ||= 0
     end
   end
+
   module InstanceMethods
     protected
 

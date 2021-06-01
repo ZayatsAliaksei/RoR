@@ -2,10 +2,11 @@ require_relative 'manufacturer'
 
 class Wagon
   include Manufacturer
-  attr_reader :type, :number
+  attr_reader :type, :number, :taken_value, :value
+
   @@wagons = {}
 
-  def initialize(type, number,value)
+  def initialize(type, number, value)
     @type = type
     @number = number
     @@wagons[number] = self
@@ -21,7 +22,7 @@ class Wagon
     @@wagons[wagon_number]
   end
 
-  def taken_value
+  def takes_value
     if value > 0
       self.taken_value += 1
       @value -= 1
@@ -29,8 +30,4 @@ class Wagon
       false
     end
   end
-
-  protected
-  attr_reader :taken_value,:value
-
 end
