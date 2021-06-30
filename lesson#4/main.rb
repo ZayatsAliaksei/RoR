@@ -7,6 +7,7 @@ require_relative 'passenger_train'
 require_relative 'station'
 require_relative 'cargo_wagon'
 require_relative 'passenger_wagon'
+require_relative 'validation'
 
 class Menu
 
@@ -169,8 +170,9 @@ class Menu
   end
 
   def train_and_route_list
+    binding.irb
     puts 'Список доступный станций:'
-    Station.all.each_key { |name| puts name }
+    Station.all { |name| puts name }
     puts 'Введите название станции на которой хотите провреить поезда:'
     Train.trains_list.each { |train| puts "Номер:#{train[0]}" }
     choice

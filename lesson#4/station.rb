@@ -13,7 +13,7 @@ class Station
   end
 
   def self.all
-    @@stations.each { |station| yield(station) }
+    @@stations.each_key { |station| yield(station) }
   end
 
   def self.find(name)

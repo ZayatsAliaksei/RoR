@@ -1,11 +1,13 @@
 require_relative 'manufacturer'
+require_relative 'validation'
 class Train
   include Manufacturer
   include InstanceCounter
+  include Validation
   attr_reader :train_number, :train_type, :route, :current_route, :wagons, :current_station
 
   NUMBER_FORMAT = /^[а-я0-9]{3}-*[а-я0-9]{2}$/i.freeze
-
+  validate :number, :format, NUMBER_FORMAT
   @@trains = {}
 
   def initialize(train_number, train_type)
@@ -83,16 +85,16 @@ class Train
 
   attr_writer :speed
 
-  def validate!
-    raise 'Номер не может быть пустым!' if @train_number.empty?
-    raise 'Номер не соотвествует формату ' if @train_number !~ NUMBER_FORMAT
-
-    true
-  end
-
-  def valid?
-    validate!
-  rescue StandardError
-    false
-  end
+  # def validate!
+  #   raise 'Номер не может быть пустым!' if @train_number.empty?
+  #   raise 'Номер не соотвествует формату ' if @train_number !~ NUMBER_FORMAT
+  #
+  #   true
+  # end
+  #
+  # def valid?
+  #   validate!
+  # rescue StandardError
+  #   false
+  # end
 end
