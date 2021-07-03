@@ -1,7 +1,11 @@
+require_relative 'validation'
+
 class Station
   include InstanceCounter
+  include Validation
   attr_reader :name, :trains
 
+  validate :name, :presence
   @@stations = {}
 
   def initialize(name)

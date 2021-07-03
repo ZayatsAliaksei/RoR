@@ -7,7 +7,9 @@ class Train
   attr_reader :train_number, :train_type, :route, :current_route, :wagons, :current_station
 
   NUMBER_FORMAT = /^[а-я0-9]{3}-*[а-я0-9]{2}$/i.freeze
-  validate :number, :format, NUMBER_FORMAT
+
+  validate :train_number, :presence
+  validate :train_number, :format, NUMBER_FORMAT
   @@trains = {}
 
   def initialize(train_number, train_type)

@@ -170,7 +170,6 @@ class Menu
   end
 
   def train_and_route_list
-    binding.irb
     puts 'Список доступный станций:'
     Station.all { |name| puts name }
     puts 'Введите название станции на которой хотите провреить поезда:'
@@ -205,8 +204,8 @@ class Menu
     @st3 = Station.new('C')
     @st4 = Station.new('D')
     @st5 = Station.new('E')
-    @train11 = Train.new('123-11', :cargo)
-    @train12 = Train.new('123-12', :passenger)
+    @train11 = PassengerTrain.new('123-11')
+    @train12 = CargoTrain.new('123-12')
     @way = Route.new('way', @st1, @st5)
     @way.add_station(@st2)
     @way.add_station(@st3)
@@ -235,6 +234,7 @@ class Menu
     Поезда перемещены на станцию вперед
     "
     sleep(1)
+    binding.irb
     choice
   end
 

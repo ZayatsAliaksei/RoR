@@ -1,8 +1,13 @@
 require_relative 'manufacturer'
+require_relative 'validation'
 
 class Wagon
   include Manufacturer
+  include Validation
   attr_reader :type, :number, :taken_value, :value
+
+  validate :value, :presence
+  validate :number, :presence
 
   @@wagons = {}
 
@@ -12,6 +17,7 @@ class Wagon
     @@wagons[number] = self
     @value = value
     @taken_value = 0
+    validate!
   end
 
   def self.wagon_list
